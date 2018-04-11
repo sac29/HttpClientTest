@@ -35,17 +35,19 @@ namespace HttpClientTest
                 client.BaseAddress = new Uri("http://localhost:52967/");
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
+                    Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(string.Format("{0}:{1}", "female", "female"))));
                 HttpResponseMessage response = await client.GetAsync("api/students/"+id);
                 if (response.IsSuccessStatusCode)
                 {
                     Student student1 = await response.Content.ReadAsAsync<Student>();
-                    Console.WriteLine("Id :{0}\tFirstName: {1}\tlasName: {2} \tgender: {3}\t No of sunjects: {4}",
+                    Console.WriteLine("Id :{0}\tFirstName: {1}\tlasName: {2} \tgender: {3}\tNo of sunjects: {4}",
                         student1.ID, student1.FirstName, student1.LastName, student1.Gender, student1.NoOfSubjects);
                     Console.ReadLine();
                 }
                 else
                 {
-                    Console.WriteLine("inernal erver error");
+                    Console.WriteLine("internal erver error");
                 }
            
             }
